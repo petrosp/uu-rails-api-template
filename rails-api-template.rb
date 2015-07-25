@@ -37,7 +37,7 @@ end
 remove_file "Gemfile"
 run "touch Gemfile"
 add_source "https://rubygems.org"
-gem "rails", "4.2.1"
+gem "rails", "4.2.3"
 gem "rails-api"
 gem "puma"
 
@@ -76,12 +76,12 @@ inside "config" do
   create_file "database.yml" do <<-EOF
 default: &default
   adapter: postgresql
-  host: db
+  host: localhost
   port: 5432
   pool: 5
   timeout: 5000
   user: postgres
-  password: postgres
+  password:
 
 development:
   <<: *default
@@ -93,7 +93,7 @@ development:
 test:
   <<: *default
   database: #{app_name}_test
-  host: 192.168.59.103
+  host: 192.168.1.2
 
 production:
   <<: *default
@@ -149,13 +149,13 @@ after_bundle do
   remove_dir "app/mailers"
   remove_dir "test"
 
-  insert_into_file "config/application.rb", after: "require \"rails/all\"\n" do <<-RUBY
+  insert_into_file "config/application.rb", after: "require 'rails/all'\n" do <<-RUBY
 require "active_record/railtie"
 require "action_controller/railtie"
   RUBY
   end
 
-  gsub_file "config/application.rb", /require "rails\/all"/, '# require "rails/all"'
+  gsub_file "config/application.rb", /require 'rails\/all'/, '# require "rails/all"'
 
   application do <<-RUBY
     config.assets.enabled = false
