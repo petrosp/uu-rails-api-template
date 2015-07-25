@@ -47,13 +47,15 @@ gem "roar-rails"
 gem "committee"
 
 gem_group :development, :test do
-  gem "spring"
+  gem 'zeus'
   gem "pry-rails"
   gem "web-console", "~> 2.0"
   gem "prmd"
   gem "guard"
   gem "rspec-rails", require: false
   gem "guard-rspec"
+  gem 'guard-bundler'
+  gem 'guard-zeus'
   gem "rubocop"
   gem "rubocop-rspec"
   gem "guard-rubocop"
@@ -85,19 +87,18 @@ default: &default
 
 development:
   <<: *default
-  database: #{app_name}_development
+  database: #{app_name}_api_development
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: #{app_name}_test
-  host: 192.168.1.2
+  database: #{app_name}_api_test
 
 production:
   <<: *default
-  database: #{app_name}_production
+  database: #{app_name}_api_production
 
   EOF
   end
@@ -176,7 +177,6 @@ require "action_controller/railtie"
 
   gsub_file "app/controllers/application_controller.rb", /protect_from_forgery/, "# protect_from_forgery"
 
-  run "spring stop"
   generate "rspec:install"
   remove_file "spec/spec_helper.rb"
   copy_file "spec_helper.rb", "spec/spec_helper.rb"
@@ -184,6 +184,9 @@ require "action_controller/railtie"
   copy_file "rails_helper.rb", "spec/rails_helper.rb"
 
   run "guard init"
+  run "zeus init"
+  remove_file "zeus.json"
+  remove_file "custom_plan.rb"
   remove_file "Guardfile"
   copy_file "Guardfile"
   remove_file ".rubocop.yml"

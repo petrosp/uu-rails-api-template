@@ -1,0 +1,18 @@
+{
+  "command": "ruby -rubygems -r./custom_plan -eZeus.go",
+
+  "plan": {
+    "boot": {
+      "default_bundle": {
+        "development_environment": {
+          "dev_console": ["c"],
+          "server":["s"]
+        },
+        "test_environment": {
+          "test_helper": {"test": ["rspec", "testrb"]},
+          "test_console": ["tc"]
+        }
+      }
+    }
+  }
+}
