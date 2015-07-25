@@ -13,7 +13,7 @@ def current_directory
       at_exit { FileUtils.remove_entry(tempdir) }
       git :clone => [
         "--quiet",
-        "https://github.com/skookum/uu-rails-api-template.git",
+        "https://github.com/petrosp/uu-rails-api-template.git",
         tempdir
       ].map(&:shellescape).join(" ")
 
