@@ -198,6 +198,8 @@ require "action_controller/railtie"
   generate(:controller, "health index")
   route "root to: \"health#index\""
 
+  run "bundle exec rake db:migrate"
+  run "bundle exec rake db:setup"
   git :init
   git add: "."
   git commit: "-a -m 'Initial commit'"
